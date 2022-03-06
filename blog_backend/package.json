@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.4",
+    "multer": "^1.4.4"
+  },
+  "name": "blog_backend",
+  "version": "1.0.0",
+  "description": "Backend for blog app",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "Nataliia Ishchenko",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}

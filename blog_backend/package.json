@@ -10,7 +10,8 @@
   "description": "Backend for blog app",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "mongo": "docker run --name mongo_be -v data:/data/db -p 27017:27017 -d mongo",
+    "start": "npm run mongo && nodemon index.js"
   },
   "author": "Nataliia Ishchenko",
   "license": "MIT",

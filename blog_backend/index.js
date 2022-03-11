@@ -1,10 +1,13 @@
 const express = require("express");
 const app = express();
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 app.use("/", (req, res) => {
   console.log("Home page");
 });
 
-app.listen("5000", () => {
+app.listen(process.env.PORT, () => {
   console.log("Backend is running");
 });

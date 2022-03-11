@@ -11,7 +11,7 @@
   "description": "Backend for blog app",
   "main": "index.js",
   "scripts": {
-    "mongo": "docker run --name mongo_be -v data:/data/db -p 27017:27017 -d mongo",
+    "mongo": "docker stop mongo_be && docker rm mongo_be || docker run --name mongo_be -v data:/data/db -p 27017:27017 -d mongo",
     "start": "npm run mongo && nodemon index.js"
   },
   "author": "Nataliia Ishchenko",

@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
+const messageRoute = require("./routes/messages");
 
 dotenv.config();
 app.use(express.json());
@@ -15,6 +16,7 @@ mongoose
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
+app.use("/api/messages", messageRoute);
 
 app.use("/", (req, res) => {
   console.log("Home page");

@@ -3,6 +3,17 @@ const User = require("../models/User");
 const Message = require("../models/Message");
 const bcrypt = require("bcrypt");
 
+// Get
+router.get("/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const { password, __v, ...rest } = user._doc;
+    res.status(200).json(rest);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+
 // Update
 router.put("/:id", async (req, res) => {
   const { id, password } = req.body;

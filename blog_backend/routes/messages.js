@@ -41,6 +41,17 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// Get post
+router.get("/:id", async (req, res) => {
+  try {
+    const message = await Message.findById(req.params.id);
+    const { __v, ...rest } = message._doc;
+    res.status(200).json(rest);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+
 // Delete post
 router.delete("/:id", async (req, res) => {
   const id = req.params.id;

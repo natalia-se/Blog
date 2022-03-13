@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../models/User");
 const Message = require("../models/Message");
 const bcrypt = require("bcrypt");
+const { requireLogin } = require("./auth");
 
 // Get
 router.get("/:id", async (req, res) => {
@@ -15,17 +16,20 @@ router.get("/:id", async (req, res) => {
 });
 
 // Update
-router.put("/:id", async (req, res) => {
-  const { id, password } = req.body;
+router.put("/:id", requireLogin, async (req, res) => {
+  const { userId } = req.user;
+  const { password } = req.body;
 
-  if (id === req.params.id) {
+  console.log(req.user);
+
+  if (userId === req.params.id) {
     if (password) {
       const salt = await bcrypt.genSalt(10);
       req.body.password = await bcrypt.hash(password, salt);
     }
     try {
       const updatedUser = await User.findByIdAndUpdate(
-        id,
+        userId,
         {
           $set: req.body,
         },
@@ -41,16 +45,16 @@ router.put("/:id", async (req, res) => {
 });
 
 // Delete
-router.delete("/:id", async (req, res) => {
-  const { id } = req.body;
+router.delete("/:id", requireLogin, async (req, res) => {
+  const { userId } = req.user;
 
-  if (id === req.params.id) {
+  if (userId === req.params.id) {
     try {
-      const user = await User.findById(id);
+      const user = await User.findById(userId);
 
       try {
-        await Message.deleteMany({ user_id: id });
-        await User.findByIdAndDelete(id);
+        await Message.deleteMany({ userId });
+        await User.findByIdAndDelete(userId);
         res.status(200).json("User has been deleted");
       } catch (error) {
         console.log(error);

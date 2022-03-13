@@ -7,7 +7,7 @@ import Input from "../components/Input";
 import Heading from "../components/Heading";
 
 export default function LoginPage() {
-  const [userName, setUserName] = useState("");
+  const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
@@ -15,24 +15,23 @@ export default function LoginPage() {
   function handleOnSubmit(e) {
     e.preventDefault();
 
-    //   const payload = { userName, password };
+    const payload = { username, password };
 
-    //   const url = ;
+    const url = "/api/auth/login";
 
-    //   fetch(url, {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify(payload),
-    //   })
-    //     .then((res) => res.json())
-    //     .then((data) => {
-    //       const token = data.token;
-    //       localStorage.setItem("task", token);
-    //       props.refreshCustomers();
-    //       props.refreshMyInfo();
-    //       navigate("/home");
-    //     });
-    navigate("/");
+    fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const token = data.token;
+        localStorage.setItem("Backend1", token);
+        // props.refreshCustomers();
+        // props.refreshMyInfo();
+        navigate("/");
+      });
   }
 
   return (
@@ -43,7 +42,7 @@ export default function LoginPage() {
           <Input
             type="text"
             placeholder="User name"
-            value={userName}
+            value={username}
             onChange={(e) => setUserName(e.target.value)}
           />
           <Input

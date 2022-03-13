@@ -7,27 +7,38 @@ import Heading from "../components/Heading";
 import FormContainer from "../components/FormContainer";
 
 export default function RegisterPage() {
-  const [userName, setUserName] = useState("");
+  const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  let resStatus = 200;
 
   function handleOnSubmit(e) {
     e.preventDefault();
-    //   const payload = {
-    //     userName,
-    //     password
-    //   };
-    //   fetch(url, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(payload),
-    //   })
-    //     .then((res) => res.json())
-    //     .then((data) => navigate("/login"));
-    navigate("/login");
+    const url = "/api/auth/register";
+    const payload = {
+      username,
+      password,
+    };
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => {
+        resStatus = res.status;
+        console.log("in", resStatus);
+      })
+      .then((data) => {
+        console.log(data);
+      });
+
+    if (resStatus !== 400 && resStatus !== 401) {
+      navigate("/login");
+    }
+    console.log(resStatus);
   }
 
   return (
@@ -38,7 +49,7 @@ export default function RegisterPage() {
           <Input
             type="text"
             placeholder="User name"
-            value={userName}
+            value={username}
             onChange={(e) => setUserName(e.target.value)}
           />
           <Input
@@ -50,6 +61,7 @@ export default function RegisterPage() {
           <Button type="submit" value="Create User"></Button>
         </form>
       </FormContainer>
+      {(resStatus === 400 || resStatus === 401) && <div>Duplicate name</div>}
     </div>
   );
 }

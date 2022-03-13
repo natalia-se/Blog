@@ -55,6 +55,22 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Get all posts
+router.get("/", async (req, res) => {
+  const userId = req.query.userId;
+  try {
+    let messages;
+    if (userId) {
+      messages = await Message.find({ userId });
+    } else {
+      messages = await Message.find();
+    }
+    res.status(200).json(messages);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+
 // Delete post
 router.delete("/:id", requireLogin, async (req, res) => {
   const id = req.params.id;

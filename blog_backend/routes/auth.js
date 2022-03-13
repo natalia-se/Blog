@@ -24,23 +24,29 @@ router.post("/register", async (req, res) => {
 });
 
 // Login
-router.post("/login", async (req, res, next) => {
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  console.log(`username: ${username}, password: ${password}`);
   try {
-    const user = await User.findOne({ username: req.body.username });
-    console.log(user);
-    if (!user) {
-      res.status(400).json("Wrong credentials!");
+    const user = await User.findOne({ username });
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const userId = user._id.toString();
+      const token = jwt.sign(
+        { userId, userName: user.username },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1 h",
+          subject: userId,
+        }
+      );
+
+      res.status(200).json({ token });
+      return;
+    } else {
+      res.status(401).json("Wrong credentials!");
       return;
     }
-
-    const validated = await bcrypt.compare(req.body.password, user.password);
-    if (!validated) {
-      res.status(400).json("Wrong credentials!");
-      return;
-    }
-
-    const { password, __v, ...rest } = user._doc;
-    res.status(200).json(rest);
   } catch (err) {
     res.status(500).json(err);
   }

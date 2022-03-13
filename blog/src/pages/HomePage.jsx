@@ -15,11 +15,9 @@ export default function HomePage({ userInfo }) {
   }, []);
 
   function fetchMessages() {
-    const token = localStorage.getItem("Backend1");
     const url = "/api/messages/";
     const headers = {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     };
 
     fetch(url, {

@@ -5,6 +5,17 @@ const bcrypt = require("bcrypt");
 const { requireLogin } = require("./auth");
 
 // Get
+router.get("/me", requireLogin, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
+    const { password, __v, ...rest } = user._doc;
+    res.status(200).json(rest);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+});
+
+// Get
 router.get("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);

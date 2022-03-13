@@ -1,9 +1,12 @@
 const router = require("express").Router();
 const Message = require("../models/Message");
+const { requireLogin } = require("./auth");
 
 // Create post
-router.post("/", async (req, res) => {
-  const newMessage = new Message(req.body);
+router.post("/", requireLogin, async (req, res) => {
+  const { userId, userName } = req.user;
+  const text = req.body.text;
+  const newMessage = new Message({ userId, userName, text });
   try {
     const savedMessage = await newMessage.save();
     res.status(200).json(savedMessage);

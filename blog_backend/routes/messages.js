@@ -16,14 +16,14 @@ router.post("/", requireLogin, async (req, res) => {
 });
 
 // Update post
-router.put("/:id", async (req, res) => {
+router.put("/:id", requireLogin, async (req, res) => {
   const id = req.params.id;
-  const user_id = req.body.user_id;
+  const { userId } = req.user;
 
   try {
     const message = await Message.findById(id);
 
-    if (message.user_id.toString() === user_id) {
+    if (message.userId.toString() === userId) {
       try {
         const updatedMessage = await Message.findByIdAndUpdate(
           id,
@@ -56,14 +56,14 @@ router.get("/:id", async (req, res) => {
 });
 
 // Delete post
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", requireLogin, async (req, res) => {
   const id = req.params.id;
-  const user_id = req.body.user_id;
+  const { userId } = req.user;
 
   try {
     const message = await Message.findById(id);
 
-    if (message.user_id.toString() === user_id) {
+    if (message.userId.toString() === userId) {
       try {
         await message.delete();
         res.status(200).json("Your message has been deleted");

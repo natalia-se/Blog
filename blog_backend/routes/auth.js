@@ -19,7 +19,11 @@ router.post("/register", async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
-    res.status(500).json(error);
+    if (error.code && error.code === 11000) {
+      res.status(400).json("Duplicate username");
+    } else {
+      res.status(500).json("Internal server error");
+    }
   }
 });
 

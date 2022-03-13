@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
@@ -45,4 +46,24 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-module.exports = router;
+const authorization = (req, _res, next) => {
+  const authHeader = req.header("Authorization");
+  if (authHeader) {
+    const token = authHeader.split(" ")[1];
+    console.log("Token:", token);
+    req.user = jwt.verify(token, process.env.JWT_SECRET);
+  }
+  next();
+};
+
+const requireLogin = (req, res, next) => {
+  if (req.user) {
+    next();
+  } else {
+    res.status(401).json("Login required!");
+  }
+};
+
+module.exports.authRoute = router;
+module.exports.authorization = authorization;
+module.exports.requireLogin = requireLogin;

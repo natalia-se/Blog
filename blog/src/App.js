@@ -36,7 +36,10 @@ function App() {
     <NameContext.Provider value={{ userInfo, setUserInfo }}>
       <div>
         <Routes>
-          <Route path="/" element={<HomePage userInfo={userInfo} />} />
+          <Route
+            path="/"
+            element={<HomePage fetchMyInformation={fetchMyInformation} />}
+          />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route

@@ -16,15 +16,16 @@ export default function ProfilePage(props) {
   const navigate = useNavigate();
   const url = `/api/users/${id}`;
 
-  const [username, setUserName] = useState(userInfo.username);
+  const [fullName, setFullName] = useState(userInfo.fullName);
   const [email, setEmail] = useState(userInfo.email ? userInfo.email : "");
-  // const [phoneNumber, setPhoneNumber] = useState(customer.phoneNumber);
+  const [profilePic, setProfilePic] = useState(userInfo.profilePic);
 
   function handleOnSubmit(e) {
     e.preventDefault();
     const payload = {
-      username,
+      fullName,
       email,
+      profilePic,
     };
     const token = localStorage.getItem("Backend1");
     const headers = {
@@ -40,6 +41,7 @@ export default function ProfilePage(props) {
       props.fetchMyInformation();
     });
   }
+  console.log(profilePic);
   return (
     <div>
       <Heading h1>My information</Heading>
@@ -48,15 +50,21 @@ export default function ProfilePage(props) {
         <form onSubmit={handleOnSubmit}>
           <Input
             type="text"
-            placeholder="User name"
-            value={username}
-            onChange={(e) => setUserName(e.target.value)}
+            placeholder="Full name"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
           />
           <Input
             type="text"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            type="file"
+            placeholder="User photo"
+            value={profilePic}
+            onChange={(e) => setProfilePic(e.target.value)}
           />
           <Button type="submit" value="Submit" />
         </form>

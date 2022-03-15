@@ -53,18 +53,19 @@ export default function HomePage({ fetchMyInformation }) {
       {/* <img src={ImageHome} alt="HomeImage" />*/}
       {userInfo && (
         <>
+          <Heading h1>Blog</Heading>
           <div>
-            <Heading h2>My information</Heading>
             <Button type="submit" value="Logout" onClick={onSubmitLogout} />
+            <Heading h2>My information</Heading>
+            <div key={userInfo._id}>
+              <Link to={`/profile/${userInfo._id}`}>
+                <Button type="submit" value="Open profile" />
+              </Link>
+            </div>
             <Card>
               <p>{userInfo.username}</p>
               <p>{userInfo.email}</p>
             </Card>
-          </div>
-          <div key={userInfo._id}>
-            <Link to={`/profile/${userInfo._id}`}>
-              <Button type="submit" value="Open profile" />
-            </Link>
           </div>
 
           <Heading h2>Create message</Heading>
@@ -88,22 +89,25 @@ export default function HomePage({ fetchMyInformation }) {
           messagesList.map((item, index) => {
             return (
               <>
-                <Chip key={index}>
-                  <img
-                    alt="Avatar"
-                    src={require(`../images/avatar.png`)}
-                    style={{
-                      float: "left",
-                      margin: "0 10px 0 -25px",
-                      height: "50px",
-                      width: "50px",
-                      borderRadius: "50%",
-                    }}
-                  />
-                  <div>
-                    {item.userName} - {item.text}
-                  </div>
-                </Chip>
+                <Link to={`/users/${item.userId}`}>
+                  <Chip key={index}>
+                    <img
+                      alt="Avatar"
+                      src={require(`../images/avatar.png`)}
+                      style={{
+                        float: "left",
+                        margin: "0 10px 0 -25px",
+                        height: "50px",
+                        width: "50px",
+                        borderRadius: "50%",
+                      }}
+                    />
+
+                    <div>
+                      {item.userName} - {item.text}
+                    </div>
+                  </Chip>
+                </Link>
                 <div>{item.createdAt}</div>
               </>
             );

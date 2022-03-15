@@ -27,14 +27,24 @@ export default function CreateMessage() {
       <form onSubmit={handleOnSubmit}>
         <div>
           <textarea
-            rows="10"
-            cols="80"
             maxLength="140"
+            style={{
+              width: "60vw",
+              height: "150px",
+              border: "none",
+              marginLeft: "20vw",
+              marginRight: "20vw",
+              padding: "8px",
+              boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
+              transition: "0.3s",
+              borderRadius: "5px",
+              background: "white",
+            }}
             value={text}
             onChange={(e) => setText(e.target.value)}
           ></textarea>
         </div>
-        <Button type="submit" value="Create" />
+        <Button type="submit" value="Create message" />
       </form>
     </div>
   );

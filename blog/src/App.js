@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
+import DetailPage from "./pages/DetailPage";
 
 const NameContext = createContext({});
 
@@ -46,6 +47,7 @@ function App() {
             path="/profile/:id"
             element={<ProfilePage fetchMyInformation={fetchMyInformation} />}
           />
+          <Route path="/users/:id" element={<DetailPage />} />
         </Routes>
       </div>
     </NameContext.Provider>

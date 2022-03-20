@@ -10,6 +10,7 @@ import Button from "../components/Button";
 import Chip from "../components/Chip";
 
 export default function HomePage({ fetchMyInformation }) {
+  const PF = "http://localhost:5000/images/";
   const [messagesList, setMessagesList] = useState(null);
   const navigate = useNavigate();
   const { userInfo } = useContext(NameContext);
@@ -17,7 +18,7 @@ export default function HomePage({ fetchMyInformation }) {
   useEffect(() => {
     fetchMessages();
     fetchMyInformation();
-  }, [fetchMyInformation]);
+  }, []);
 
   function fetchMessages() {
     const url = "/api/messages/";
@@ -48,12 +49,14 @@ export default function HomePage({ fetchMyInformation }) {
     fetchMyInformation();
     window.location.reload(false);
   }
+  // const mes = Object.entries(messagesList);
+  console.log("messagesList", messagesList);
   return (
     <div>
       {/* <img src={ImageHome} alt="HomeImage" />*/}
+      <Heading h1>Blog</Heading>
       {userInfo && (
         <>
-          <Heading h1>Blog</Heading>
           <div>
             <Button type="submit" value="Logout" onClick={onSubmitLogout} />
             <Heading h2>My information</Heading>
@@ -64,12 +67,13 @@ export default function HomePage({ fetchMyInformation }) {
             </div>
             <Card>
               <p>{userInfo.username}</p>
+              <p>{userInfo.fullName}</p>
               <p>{userInfo.email}</p>
             </Card>
           </div>
 
           <Heading h2>Create message</Heading>
-          <CreateMessage />
+          <CreateMessage fetchMessages={fetchMessages} />
         </>
       )}
       {!userInfo && (
@@ -83,33 +87,62 @@ export default function HomePage({ fetchMyInformation }) {
         </div>
       )}
 
-      <Heading h2>Message list</Heading>
+      {/* <Heading h2>Message list</Heading> */}
       <FormContainer>
         {messagesList &&
           messagesList.map((item, index) => {
             return (
-              <>
-                <Link to={`/users/${item.userId}`}>
-                  <Chip key={index}>
-                    <img
-                      alt="Avatar"
-                      src={require(`../images/avatar.png`)}
-                      style={{
-                        float: "left",
-                        margin: "0 10px 0 -25px",
-                        height: "50px",
-                        width: "50px",
-                        borderRadius: "50%",
-                      }}
-                    />
+              <div key={index}>
+                <div style={{ display: "flex" }}>
+                  <Link to={`/users/${item.userId._id}`}>
+                    <Chip>
+                      {item.userId.profilePic && (
+                        <img
+                          alt="Avatar"
+                          src={PF + item.userId.profilePic}
+                          style={{
+                            float: "left",
+                            margin: "0 10px 0 -25px",
+                            height: "50px",
+                            width: "50px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      )}
+                      {!item.userId.profilePic && (
+                        <img
+                          alt="Avatar"
+                          src={require(`../images/avatar.png`)}
+                          style={{
+                            float: "left",
+                            margin: "0 10px 0 -25px",
+                            height: "50px",
+                            width: "50px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      )}
 
-                    <div>
-                      {item.userName} - {item.text}
-                    </div>
-                  </Chip>
-                </Link>
+                      <div>{item.userId.username}</div>
+                    </Chip>
+                  </Link>
+                  <div
+                    style={{
+                      margin: "15px 0px",
+                      padding: "15px 20px 15px 55px",
+                      width: "400px",
+                      display: "flex-grow",
+                      font: "bold 12px verdana",
+                      boxShadow: "0 0 5px #888",
+                      textShadow: "2px 2px 2px #ccc",
+                      borderRadius: "25px",
+                    }}
+                  >
+                    {item.text}
+                  </div>
+                </div>
                 <div>{item.createdAt}</div>
-              </>
+              </div>
             );
           })}
       </FormContainer>

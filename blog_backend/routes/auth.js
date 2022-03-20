@@ -5,6 +5,9 @@ const bcrypt = require("bcrypt");
 
 // Register
 router.post("/register", async (req, res) => {
+  console.log("/register");
+  console.log(req.body);
+
   try {
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(req.body.password, salt);
@@ -19,6 +22,7 @@ router.post("/register", async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
+    console.log(error.message);
     if (error.code && error.code === 11000) {
       res.status(400).json("Duplicate username");
     } else {
@@ -44,7 +48,7 @@ router.post("/login", async (req, res) => {
           subject: userId,
         }
       );
-
+      console.log(token);
       res.status(200).json({ token });
       return;
     } else {

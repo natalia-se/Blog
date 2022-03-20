@@ -4,9 +4,9 @@ const { requireLogin } = require("./auth");
 
 // Create post
 router.post("/", requireLogin, async (req, res) => {
-  const { userId, userName } = req.user;
+  const { userId } = req.user;
   const text = req.body.text;
-  const newMessage = new Message({ userId, userName, text });
+  const newMessage = new Message({ userId, text });
   try {
     const savedMessage = await newMessage.save();
     res.status(200).json(savedMessage);
@@ -61,9 +61,15 @@ router.get("/", async (req, res) => {
   try {
     let messages;
     if (userId) {
-      messages = await Message.find({ userId });
+      messages = await Message.find({ userId })
+        .sort({ createdAt: -1 })
+        .populate("userId")
+        .exec();
     } else {
-      messages = await Message.find();
+      messages = await Message.find()
+        .sort({ createdAt: -1 })
+        .populate("userId")
+        .exec();
     }
     res.status(200).json(messages);
   } catch (error) {

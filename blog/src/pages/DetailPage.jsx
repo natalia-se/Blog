@@ -10,7 +10,8 @@ import FormContainer from "../components/FormContainer";
 export default function ProfilePage() {
   const params = useParams();
   const id = params.id;
-  console.log(id);
+  // console.log(id);
+  const PF = "http://localhost:5000/images/";
 
   const navigate = useNavigate();
 
@@ -66,13 +67,31 @@ export default function ProfilePage() {
             <Heading h2>User information</Heading>
             <Card>
               <div style={{ display: "flex", padding: "4px" }}>
-                <img
+                {/* <img
                   alt="Avatar"
                   src={require(`../images/avatar.png`)}
                   style={{
                     width: "50%",
                   }}
-                />
+                /> */}
+                {userInformation.profilePic && (
+                  <img
+                    alt="Avatar"
+                    src={PF + userInformation.profilePic}
+                    style={{
+                      width: "50%",
+                    }}
+                  />
+                )}
+                {!userInformation.profilePic && (
+                  <img
+                    alt="Avatar"
+                    src={require(`../images/avatar.png`)}
+                    style={{
+                      width: "50%",
+                    }}
+                  />
+                )}
                 <div style={{ padding: "16px" }}>
                   <h3>{userInformation.username}</h3>
                   <p>{userInformation.fullName}</p>

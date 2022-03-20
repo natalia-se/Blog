@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "./Button";
 
-export default function CreateMessage() {
+export default function CreateMessage({ fetchMessages }) {
   const [text, setText] = useState("");
 
   function handleOnSubmit(e) {
@@ -19,7 +19,10 @@ export default function CreateMessage() {
       method: "POST",
       headers: headers,
       body: JSON.stringify(payload),
-    }).then((res) => res.json());
+    }).then((res) => {
+      fetchMessages();
+      setText("");
+    });
     // .then((data) => props.onSuccess());
   }
   return (

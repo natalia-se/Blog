@@ -2,9 +2,12 @@ const mongoose = require("mongoose");
 
 const messageSchema = new mongoose.Schema(
   {
-    userId: { type: mongoose.ObjectId, required: true },
-    userName: { type: String, required: true },
     text: { type: String, required: true, minlength: 3, maxLenth: 140 },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );

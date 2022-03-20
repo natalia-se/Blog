@@ -5,13 +5,14 @@ import Input from "../components/Input";
 import Button from "../components/Button";
 import Heading from "../components/Heading";
 import FormContainer from "../components/FormContainer";
+import Chip from "../components/Chip";
 
 export default function RegisterPage() {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [resStatus, setResStatus] = useState(null);
 
   const navigate = useNavigate();
-  let resStatus = 200;
 
   function handleOnSubmit(e) {
     e.preventDefault();
@@ -26,21 +27,17 @@ export default function RegisterPage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
-    })
-      .then((res) => {
-        resStatus = res.status;
-        console.log("in", resStatus);
-      })
-      .then((data) => {
-        console.log(data);
-      });
-
-    if (resStatus !== 400 && resStatus !== 401) {
-      navigate("/login");
-    }
-    console.log(resStatus);
+    }).then((res) => {
+      setResStatus(res.status);
+      if (res.status !== 400 && res.status !== 401) {
+        navigate("/login");
+      }
+    });
+    // .then((data) => {
+    //   console.log(data);
+    // });
   }
-
+  console.log("out", resStatus);
   return (
     <div>
       <Heading h1>Create user</Heading>
@@ -61,7 +58,7 @@ export default function RegisterPage() {
           <Button type="submit" value="Create User"></Button>
         </form>
       </FormContainer>
-      {(resStatus === 400 || resStatus === 401) && <div>Duplicate name</div>}
+      {(resStatus === 400 || resStatus === 401) && <Chip>Duplicate name</Chip>}
     </div>
   );
 }
